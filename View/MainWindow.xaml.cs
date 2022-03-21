@@ -29,6 +29,7 @@ namespace WpfApp
 
         DispatcherTimer timer;
         SpaceObject obj;
+        DependencyObject focusScope;
         double DaysPassed = 0;
         double Speed = 0.5;
         bool showOrbit = true, showText = true;
@@ -59,7 +60,7 @@ namespace WpfApp
             obj = CreateSpace(); // Create Solar System with Sun as parent object
             InitDropDown();
             timer = new DispatcherTimer();
-            
+            focusScope = FocusManager.GetFocusScope(this);
 
             SizeChanged += new SizeChangedEventHandler((object? sender, SizeChangedEventArgs e) => Draw());
             MouseRightButtonDown += Window_MouseRightButtonDown;
@@ -110,8 +111,13 @@ namespace WpfApp
         {
             PlanetInfoText.Visibility = Visibility.Hidden;
 
+            scaleTransform.ScaleX = 1;
+            scaleTransform.ScaleY = 1;
+
+
             if (obj.Parent != null)
             {
+                obj.isCenterObject = false;
                 obj = obj.Parent;
             }
         }
@@ -149,7 +155,6 @@ namespace WpfApp
 
             DrawObject(obj);
             obj.Children.ForEach(child => DrawObject(child));
-
         }
 
         private void DrawObject(SpaceObject obj)
@@ -276,27 +281,16 @@ namespace WpfApp
 
         private void PlanetDropDown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            obj.isCenterObject = false;
             obj = (Planet)(PlanetDropDown.SelectedItem);
+            obj.isCenterObject = true;
             PlanetInfoText.Text = obj.ToInfoString();
             PlanetInfoText.Visibility = Visibility.Visible;
-            /*    
-            TransformGroup g = new TransformGroup();
 
-                translateTransform = new TranslateTransform(-(scale * obj.Position.X), -(scale * obj.Position.Y));
-                scaleTransform = new ScaleTransform(scale, scale);
-
-                g.Children.Add(translateTransform);
-                g.Children.Add(scaleTransform);
-
-                SolarSystemCanvas.RenderTransform = g;
-                // TODO add info text to PlanetInfoCanvas
-                // TODO add info method to SpaceObject library
-                obj.Children.ForEach(moon =>
-                {
-                    // TODO add info to PlanetInfoCanvas
-                    // TODO add info method to SpaceObject library
-                });
-            */
+            scaleTransform.CenterX = Width / 2;
+            scaleTransform.CenterY = Height / 2;
+            scaleTransform.ScaleX = 2.5f;
+            scaleTransform.ScaleY = 2.5f;
         }
 
         private MColor ToMediaColor(DColor color)

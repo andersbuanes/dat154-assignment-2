@@ -7,16 +7,13 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="MainWindow" Height="1200" Width="1800" Name="Window">
-    <Grid Name="MainGrid">
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Canvas Name="SolarSystemCanvas" Background="Black" Grid.ZIndex="1">
                 <Canvas.RenderTransform>
-                    <TransformGroup>
                         <ScaleTransform x:Name="scaleTransform"/>
-                        <TranslateTransform x:Name="translateTransform"/>
-                    </TransformGroup>
                 </Canvas.RenderTransform>
             </Canvas>
         <ComboBox Name="PlanetDropDown" Text="Select Planet" IsEditable="True" IsReadOnly="True" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Width="120" Grid.ZIndex="2" />

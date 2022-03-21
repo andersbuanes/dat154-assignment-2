@@ -46,6 +46,7 @@ namespace SpaceLibrary
         public double ObjectRadius { get; }
         public double RotationalPeriod { get; }
         public Color color { get; }
+        public bool isCenterObject;
         public List<SpaceObject> Children { get; set; }
         public SpaceObject? Parent { get; set; }
         public Position Position { get; set; }
@@ -58,6 +59,7 @@ namespace SpaceLibrary
             this.ObjectRadius = ObjectRadius;
             this.RotationalPeriod = RotationalPeriod;
             this.color = color;
+            isCenterObject = false;
             Position = new Position(OrbitalRadius, 0);
             Children = new List<SpaceObject>();
             Parent = null;
@@ -68,8 +70,20 @@ namespace SpaceLibrary
             double Progress = OrbitalPeriod == 0 ? 0 : Time / OrbitalPeriod;
             double Angle = Progress * Math.PI * 2;
 
-            double XPos = scale(OrbitalRadius) * Math.Cos(Angle);
-            double YPos = scale(OrbitalRadius) * Math.Sin(Angle);
+            double XPos;
+            double YPos;
+
+            if (isCenterObject)
+            {
+                XPos = 0;
+                YPos = 0;
+            }
+            else
+            {
+                XPos = scale(OrbitalRadius) * Math.Cos(Angle);
+                YPos = scale(OrbitalRadius) * Math.Sin(Angle);
+            }
+            
             Position position = new Position(XPos, YPos);
 
             if (Parent != null && this is Moon)
