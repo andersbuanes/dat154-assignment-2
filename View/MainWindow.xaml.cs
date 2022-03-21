@@ -121,11 +121,11 @@ namespace WpfApp
             double change = 0.1;
             switch (e.Key)
             {
-                case Key.Up:
+                case Key.Up or Key.Right:
                     if (Speed + change <= 5)
                         Speed += change;
                     break;
-                case Key.Down:
+                case Key.Down or Key.Left:
                     if (Speed - change >= 0.1)
                         Speed -= change;
                     break;
@@ -302,30 +302,6 @@ namespace WpfApp
         private MColor ToMediaColor(DColor color)
         {
             return MColor.FromArgb(color.A, color.R, color.G, color.B);
-        }
-
-        private double ScaleObjectRadius(double Radius)
-        {
-            return Math.Log2(Radius);
-        }
-
-        private double ScaleOrbitalRadius(double Radius)
-        {
-            double scaled = 0.0f;
-            if (Radius < 1.0f)
-                scaled = Math.Log2(0.75 + Radius);
-            else if (Radius == 1.0f)
-                scaled = Math.Log2(0.5 + Radius);
-            else if (Radius < 2.0f)
-                scaled = Math.Log2(Radius);
-            else if (Radius < 6.0f)
-                scaled = Math.Log2(Radius - 2.5);
-            else if (Radius < 10.0f)
-                scaled = Math.Log2(Radius - 6.5);
-            else
-                scaled = Math.Log2(Radius - 15.8);
-
-            return scaled;
         }
 
         private double ScaleValue(double value, double factor, double optionalvalue = 0)
